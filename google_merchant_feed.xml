@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+	<channel>
+		<title>متجر الكويت</title>
+		<link>https://your-domain.com</link>
+		<description>أفخم المنتجات الكويتية الأصلية</description>
+		
+        <!-- مثال لمنتج واحد، قم بتكرار هذا الجزء لكل منتج لديك -->
+		<item>
+			<g:id>1</g:id>
+			<g:title>اسم المنتج هنا</g:title>
+			<g:description>وصف تفصيلي للمنتج الكويتي الأصيل...</g:description>
+			<g:link>https://your-domain.com/product.html?id=1</g:link>
+			<g:image_link>https://your-domain.com/images/product1.jpg</g:image_link>
+			<g:condition>new</g:condition>
+			<g:availability>in_stock</g:availability>
+			<g:price>10.000 KWD</g:price>
+			<g:shipping>
+				<g:country>KW</g:country>
+				<g:price>1.000 KWD</g:price>
+			</g:shipping>
+		</item>
+        
+	</channel>
+</rss>
