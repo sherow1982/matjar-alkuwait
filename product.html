@@ -3,99 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر الكويت | تفاصيل المنتج</title>
+    <title>جاري التحميل... | متجر الكويت</title>
     <meta name="description" content="تفاصيل المنتج">
+    
+    <!-- خطوط عربية -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23004d35'%3E%3Cpath d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'/%3E%3C/svg%3E">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // تطبيق الثيم فوراً لمنع الوميض
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { sans: ['Cairo', 'sans-serif'] },
-                    colors: { brand: { 500: '#1a4d2e', 600: '#143d24' }, gold: { 500: '#d4af37' } }
+                    colors: { 
+                        brand: { 
+                            50: '#f4f7f2',
+                            500: '#527845', 
+                            600: '#3f5e34', 
+                            700: '#334b2b', 
+                            800: '#2a3b24', 
+                            900: '#23311f', 
+                        },
+                        gold: { 400: '#fbbf24', 500: '#d4af37', 600: '#b45309' },
+                        sand: { 50: '#ffffff', 100: '#f8f8f8' }
+                    },
+                    backgroundImage: {
+                        'pattern': "none"
+                    }
                 }
             }
         }
     </script>
+
+    <style>
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <!-- Schema.org Placeholder -->
+    <script type="application/ld+json" id="product-schema"></script>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex items-center gap-4">
-            <a href="index.html" class="text-gray-500 hover:text-brand-500 transition flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                العودة
+<body class="bg-sand-50 dark:bg-gray-900 bg-pattern font-sans text-gray-800 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md sticky top-0 z-50 border-b border-gold-500/20 dark:border-gray-700 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 bg-brand-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:bg-brand-700 transition">K</div>
+                <h1 class="text-2xl font-black text-brand-700 dark:text-white tracking-tight group-hover:text-brand-800 dark:group-hover:text-gray-200 transition">متجر الكويت<span class="text-gold-500 text-3xl leading-none">.</span></h1>
             </a>
+
+            <div class="hidden md:flex items-center space-x-8 space-x-reverse text-gray-700 dark:text-gray-200 font-bold text-sm">
+                <a href="index.html" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline decoration-2 underline-offset-4 transition-all">الرئيسية</a>
+                <a href="about.html" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline decoration-2 underline-offset-4 transition-all">من نحن</a>
+                <a href="contact.html" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline decoration-2 underline-offset-4 transition-all">اتصل بنا</a>
+                
+                <button class="theme-toggle-btn p-2 text-brand-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 rounded-full transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <button onclick="CartManager.toggleDrawer()" class="relative p-2 text-brand-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 rounded-full transition-colors duration-300 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span class="cart-count-badge hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </button>
+            </div>
+
+            <div class="md:hidden flex items-center gap-4">
+                 <button class="theme-toggle-btn p-2 text-brand-700 dark:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                 <button onclick="CartManager.toggleDrawer()" class="relative p-2 text-brand-700 dark:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span class="cart-count-badge hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </button>
+                <button onclick="MobileMenuManager.toggle()" class="p-2 text-brand-700 dark:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+            <div class="flex flex-col p-4 space-y-3 font-bold text-gray-700 dark:text-gray-200">
+                <a href="index.html" class="hover:text-brand-600 dark:hover:text-brand-400">الرئيسية</a>
+                <a href="about.html" class="hover:text-brand-600 dark:hover:text-brand-400">من نحن</a>
+                <a href="contact.html" class="hover:text-brand-600 dark:hover:text-brand-400">اتصل بنا</a>
+            </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-10 min-h-screen flex items-center justify-center">
-        <div id="loading" class="text-center text-xl text-gray-500">جاري تحميل التفاصيل...</div>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <div id="loading" class="text-center py-20 text-xl text-gray-500">جاري تحميل تفاصيل المنتج...</div>
         
-        <div id="product-card" class="hidden bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <div class="bg-gray-100 relative h-96 md:h-auto flex items-center justify-center p-8 group">
-                    <img id="p-image" src="" alt="" class="max-h-[500px] w-auto object-contain drop-shadow-xl transition transform group-hover:scale-105 duration-500">
+        <div id="product-container" class="hidden bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700 fade-in-on-scroll">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                
+                <!-- قسم الصور (يمين) -->
+                <div class="p-6 lg:p-10 bg-sand-50 dark:bg-gray-900 flex flex-col items-center justify-center relative">
+                    <div class="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
+                    <div class="relative w-full aspect-square bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden mb-4 border border-gray-200 dark:border-gray-700">
+                        <img id="main-image" src="" alt="صورة المنتج" class="w-full h-full object-contain p-2 transition duration-500 hover:scale-105">
+                    </div>
+                    <!-- معرض الصور المصغرة -->
+                    <div id="thumbnails" class="flex gap-3 overflow-x-auto w-full py-2 px-1 scrollbar-hide justify-center">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
                 </div>
-                <div class="p-8 md:p-16 flex flex-col justify-center bg-white">
-                    <span id="p-category" class="text-sm text-gold-500 font-bold uppercase tracking-wider mb-3"></span>
-                    <h1 id="p-name" class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight"></h1>
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="text-4xl font-bold text-brand-500"><span id="p-price"></span> <span id="p-currency" class="text-xl text-gray-500"></span></div>
-                        <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">متوفر</span>
+
+                <!-- قسم التفاصيل (يسار) -->
+                <div class="p-6 lg:p-10 flex flex-col">
+                    <div class="mb-4">
+                        <span id="product-category" class="text-gold-600 dark:text-gold-400 font-bold tracking-wider text-sm uppercase border-b-2 border-gold-400 pb-1"></span>
+                        <h1 id="product-title" class="text-3xl lg:text-4xl font-black text-brand-700 dark:text-white mt-4 leading-tight"></h1>
                     </div>
-                    <div class="prose prose-lg text-gray-600 mb-10">
-                        <p id="p-desc" class="leading-relaxed"></p>
+
+                    <!-- السعر والتوفر -->
+                    <div class="flex items-center gap-4 mb-6 border-b border-gray-100 dark:border-gray-700 pb-6">
+                        <div id="price-box" class="text-3xl font-bold text-brand-600 dark:text-brand-400"></div>
+                        <div id="availability-badge" class="px-3 py-1 rounded-full text-sm font-bold"></div>
                     </div>
-                    <div class="mt-auto">
-                        <a id="whatsapp-btn" href="#" target="_blank" class="w-full flex items-center justify-center gap-3 bg-[#25D366] text-white font-bold py-4 rounded-xl hover:bg-[#128C7E] transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                            اطلب الآن عبر واتساب
-                        </a>
+
+                    <!-- الوصف -->
+                    <div class="prose prose-lg text-gray-600 dark:text-gray-300 mb-8 flex-grow">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">تفاصيل المنتج:</h3>
+                        <p id="product-description" class="whitespace-pre-line leading-relaxed"></p>
+                    </div>
+
+                    <!-- أزرار الشراء -->
+                    <div class="mt-auto pt-6 flex flex-col gap-4">
+                        <div class="flex gap-3">
+                            <button id="add-to-cart-btn" class="flex-1 bg-brand-600 hover:bg-brand-700 dark:bg-brand-700 dark:hover:bg-brand-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-2 text-base border-b-4 border-brand-800 dark:border-brand-900 active:border-0 active:translate-y-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                إضافة للسلة
+                            </button>
+                            <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-2 text-base border-b-4 border-green-700 active:border-0 active:translate-y-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-8.683-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.151-.174.2-.298.3-.495.099-.198.05-.372-.025-.52-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                واتساب
+                            </a>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-2 pt-4 border-t border-gray-100 dark:border-gray-700">
+                            <a href="shipping-policy.html" class="flex items-center justify-center gap-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 bg-gray-50 dark:bg-gray-700 py-3 rounded-lg transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                سياسة الشحن
+                            </a>
+                            <a href="return-policy.html" class="flex items-center justify-center gap-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 bg-gray-50 dark:bg-gray-700 py-3 rounded-lg transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                سياسة الاسترجاع
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- قسم منتجات مشابهة (Carousel) -->
+        <div id="related-section" class="hidden mt-16 fade-in-on-scroll">
+            <h3 class="text-2xl font-bold text-brand-700 dark:text-white mb-6 pr-2 border-r-4 border-gold-500">منتجات قد تعجبك</h3>
+            <div id="related-products-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- سيتم ملؤها بالجافاسكريبت -->
+            </div>
+        </div>
+        
+        <div id="error-msg" class="hidden text-center py-20 text-red-500 text-xl font-bold">
+            لم يتم العثور على المنتج المطلوب.
+            <br>
+            <a href="index.html" class="text-brand-600 dark:text-brand-400 underline mt-4 block">العودة للرئيسية</a>
+        </div>
     </main>
 
+    <footer class="bg-brand-900 text-white pt-16 pb-8 mt-auto border-t-4 border-brand-600">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-right">
+                <div>
+                    <h2 class="text-2xl font-bold mb-6 text-white flex items-center gap-2">
+                        <span class="text-brand-500">K</span>uwait Store
+                    </h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        وجهتكم الأولى لاكتشاف أصالة المنتجات الكويتية. نجمع بين التراث العريق والجودة العالية لنقدم لكم تجربة تسوق فريدة ومتميزة.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-white border-b border-brand-700 pb-2 inline-block">روابط سريعة</h3>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">الرئيسية</a></li>
+                        <li><a href="about.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">من نحن</a></li>
+                        <li><a href="contact.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">اتصل بنا</a></li>
+                        <li><a href="cart.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">سلة المشتريات</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-white border-b border-brand-700 pb-2 inline-block">السياسات والدعم</h3>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="shipping-policy.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">سياسة الشحن</a></li>
+                        <li><a href="return-policy.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">سياسة الاسترجاع</a></li>
+                        <li><a href="privacy.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">سياسة الخصوصية</a></li>
+                        <li><a href="terms.html" class="hover:text-brand-500 hover:translate-x-[-5px] transition-all inline-block">الشروط والأحكام</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-white border-b border-brand-700 pb-2 inline-block">تواصل معنا</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-brand-500 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            <span>الكويت، العاصمة</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-brand-500 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                            <span>01110760081</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-brand-500 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                            <span>sherow1982@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-brand-800 pt-8 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">
+                    &copy; <span id="current-year">2024</span> <span class="text-white font-bold">متجر الكويت</span>. جميع الحقوق محفوظة.
+                </p>
+                <p class="text-gray-400 text-xs">
+                    الدفع عند الاستلام - التوصيل في خلال 3 ايام الى باب المنزل
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
     <script>
-        const STORE_PHONE = "96512345678"; // ضع رقمك هنا
-
-        function getQueryParam(param) { return new URLSearchParams(window.location.search).get(param); }
-
-        function updateSchema(product) {
-            const schema = {
-                "@context": "https://schema.org/", "@type": "Product",
-                "name": product.name, "image": [product.image], "description": product.description,
-                "sku": product.sku || product.id,
-                "offers": { "@type": "Offer", "priceCurrency": product.currency, "price": product.price, "availability": "https://schema.org/InStock" }
-            };
-            const s = document.createElement('script'); s.type = "application/ld+json"; s.text = JSON.stringify(schema); document.head.appendChild(s);
+        // دالة لجلب الباراميترات من الرابط
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
         }
 
         async function loadProduct() {
-            const id = getQueryParam('id');
-            if (!id) { window.location.href = 'index.html'; return; }
+            const productId = getQueryParam('id');
+            
+            if (!productId) {
+                showError();
+                return;
+            }
+
             try {
-                const res = await fetch('products.json');
-                const products = await res.json();
-                const product = products.find(p => p.id == id);
+                const response = await fetch('products.json');
+                const products = await response.json();
+                // البحث عن المنتج باستخدام ID (كنص لضمان المطابقة)
+                const product = products.find(p => String(p.id) === String(productId));
+
                 if (product) {
-                    document.getElementById('p-image').src = product.image;
-                    document.getElementById('p-category').innerText = product.category;
-                    document.getElementById('p-name').innerText = product.name;
-                    document.getElementById('p-price').innerText = product.price;
-                    document.getElementById('p-currency').innerText = product.currency;
-                    document.getElementById('p-desc').innerText = product.description;
-                    document.title = `${product.name} | متجر الكويت`;
-                    document.querySelector('meta[name="description"]').setAttribute("content", product.description);
-                    updateSchema(product);
-                    const msg = `مرحباً، أرغب بطلب المنتج: ${product.name} (كود: ${product.id})`;
-                    document.getElementById('whatsapp-btn').href = `https://wa.me/${STORE_PHONE}?text=${encodeURIComponent(msg)}`;
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('product-card').classList.remove('hidden');
-                } else { document.getElementById('loading').innerText = 'المنتج غير موجود'; }
-            } catch (e) { document.getElementById('loading').innerText = 'خطأ في الاتصال'; }
+                    renderProduct(product);
+                    renderRelatedProducts(products, product.id);
+                } else {
+                    showError();
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showError();
+            }
         }
+
+        function renderProduct(product) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('product-container').classList.remove('hidden');
+
+            // 1. تحديث SEO والعناوين
+            document.title = `${product.name} | متجر الكويت`;
+            document.querySelector('meta[name="description"]').setAttribute("content", product.seo_description || product.description.substring(0, 150));
+
+            // 2. البيانات الأساسية
+            document.getElementById('product-title').innerText = product.name;
+            document.getElementById('product-category').innerText = product.category || 'عام';
+            document.getElementById('product-description').innerText = product.description;
+            
+            // 3. السعر
+            const priceBox = document.getElementById('price-box');
+            if (product.sale_price && product.sale_price !== product.regular_price && product.sale_price !== '0') {
+                priceBox.innerHTML = `
+                    <span class="text-gray-400 line-through text-xl ml-2">${product.regular_price} ${product.currency}</span>
+                    <span>${product.sale_price} ${product.currency}</span>
+                `;
+            } else {
+                priceBox.innerText = `${product.price} ${product.currency}`;
+            }
+
+            // 4. التوفر
+            const availBadge = document.getElementById('availability-badge');
+            if (product.availability === 'InStock') {
+                availBadge.innerText = 'متوفر';
+                availBadge.classList.add('bg-green-100', 'text-green-800');
+            } else {
+                availBadge.innerText = 'غير متوفر';
+                availBadge.classList.add('bg-red-100', 'text-red-800');
+            }
+
+            // 5. الصور
+            const mainImg = document.getElementById('main-image');
+            const thumbContainer = document.getElementById('thumbnails');
+            
+            // الصورة الرئيسية الافتراضية
+            mainImg.src = product.image || 'https://via.placeholder.com/500?text=No+Image';
+
+            // إنشاء الصور المصغرة
+            if (product.images && product.images.length > 0) {
+                product.images.forEach((imgUrl, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgUrl;
+                    thumb.className = `w-20 h-20 object-cover rounded-lg cursor-pointer border-2 transition ${index === 0 ? 'border-brand-500' : 'border-transparent hover:border-gray-300'}`;
+                    
+                    thumb.onclick = () => {
+                        mainImg.src = imgUrl;
+                        // تحديث الستايل للصور المصغرة
+                        Array.from(thumbContainer.children).forEach(c => c.classList.remove('border-brand-500'));
+                        thumb.classList.add('border-brand-500');
+                        thumb.classList.remove('border-transparent');
+                    };
+                    
+                    thumbContainer.appendChild(thumb);
+                });
+            }
+
+            // 6. زر إضافة للسلة
+            document.getElementById('add-to-cart-btn').onclick = () => {
+                CartManager.addToCart(product);
+            };
+
+            // 7. زر واتساب
+            const msg = `مرحباً،\nأود طلب/الاستفسار عن المنتج التالي:\n\n*المنتج:* ${product.name}\n*السعر:* ${product.price} ${product.currency}\n*الرابط:* ${window.location.href}`;
+            document.getElementById('whatsapp-btn').href = `https://wa.me/201110760081?text=${encodeURIComponent(msg)}`;
+
+            // 7. Schema.org (JSON-LD)
+            const schemaData = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": product.name,
+                "image": product.images,
+                "description": product.seo_description || product.description,
+                "sku": product.id,
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": product.currency,
+                    "price": product.price, // السعر النهائي
+                    "availability": product.availability === 'InStock' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    "itemCondition": "https://schema.org/NewCondition"
+                }
+            };
+            document.getElementById('product-schema').textContent = JSON.stringify(schemaData);
+        }
+
+        function renderRelatedProducts(allProducts, currentId) {
+            const relatedContainer = document.getElementById('related-products-grid');
+            if (!relatedContainer) return;
+
+            // اختيار 4 منتجات عشوائية غير المنتج الحالي
+            const related = allProducts.filter(p => String(p.id) !== String(currentId))
+                                       .sort(() => 0.5 - Math.random())
+                                       .slice(0, 4);
+            
+            relatedContainer.innerHTML = '';
+            related.forEach(p => {
+                relatedContainer.innerHTML += `
+                    <a href="product.html?id=${p.id}&name=${p.slug}" class="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col">
+                        <div class="relative h-48 overflow-hidden bg-gray-100">
+                            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-sm text-gray-900 dark:text-white mb-2 line-clamp-2 leading-snug">${p.name}</h3>
+                            <span class="text-brand-600 dark:text-brand-400 font-bold text-lg mt-auto">${p.price} <span class="text-xs text-gray-500">${p.currency}</span></span>
+                        </div>
+                    </a>
+                `;
+            });
+            
+            if (related.length > 0) {
+                document.getElementById('related-section').classList.remove('hidden');
+            }
+        }
+
+        function showError() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error-msg').classList.remove('hidden');
+        }
+
+        // بدء التحميل
         loadProduct();
     </script>
 </body>

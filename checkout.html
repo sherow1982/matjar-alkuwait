@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الطلب | متجر الكويت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23004d35'%3E%3Cpath d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'/%3E%3C/svg%3E">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // تطبيق الثيم فوراً لمنع الوميض
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Cairo', 'sans-serif'] },
+                    colors: { 
+                        brand: { 
+                            50: '#f4f7f2',
+                            500: '#527845', 
+                            600: '#3f5e34', 
+                            700: '#334b2b', 
+                            800: '#2a3b24', 
+                            900: '#23311f', 
+                        },
+                        gold: { 400: '#fbbf24', 500: '#d4af37', 600: '#b45309' },
+                        sand: { 50: '#ffffff', 100: '#f8f8f8' }
+                    },
+                    backgroundImage: {
+                        'pattern': "none"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-sand-50 dark:bg-gray-900 bg-pattern font-sans text-gray-800 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-300">
+
+    <nav class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md sticky top-0 z-50 border-b border-gold-500/20 dark:border-gray-700 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 bg-brand-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:bg-brand-700 transition">K</div>
+                <h1 class="text-2xl font-black text-brand-700 dark:text-white tracking-tight group-hover:text-brand-800 dark:group-hover:text-gray-200 transition">متجر الكويت<span class="text-gold-500 text-3xl leading-none">.</span></h1>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8 space-x-reverse text-gray-700 dark:text-gray-200 font-bold text-sm">
+                <a href="index.html" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline decoration-2 underline-offset-4 transition-all">الرئيسية</a>
+                <a href="about.html" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline decoration-2 underline-offset-4 transition-all">من نحن</a>
+                <a href="contact.html" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline decoration-2 underline-offset-4 transition-all">اتصل بنا</a>
+                
+                <button class="theme-toggle-btn p-2 text-brand-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 rounded-full transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <button onclick="CartManager.toggleDrawer()" class="relative p-2 text-brand-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 rounded-full transition-colors duration-300 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span class="cart-count-badge hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </button>
+            </div>
+
+            <div class="md:hidden flex items-center gap-4">
+                 <button class="theme-toggle-btn p-2 text-brand-700 dark:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                 <button onclick="CartManager.toggleDrawer()" class="relative p-2 text-brand-700 dark:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span class="cart-count-badge hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </button>
+                <button onclick="MobileMenuManager.toggle()" class="p-2 text-brand-700 dark:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+            <div class="flex flex-col p-4 space-y-3 font-bold text-gray-700 dark:text-gray-200">
+                <a href="index.html" class="hover:text-brand-600 dark:hover:text-brand-400">الرئيسية</a>
+                <a href="about.html" class="hover:text-brand-600 dark:hover:text-brand-400">من نحن</a>
+                <a href="contact.html" class="hover:text-brand-600 dark:hover:text-brand-400">اتصل بنا</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 max-w-2xl flex-grow py-12">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 border-t-4 border-gold-500">
+            <h2 class="text-2xl font-bold mb-6 text-center dark:text-white">بيانات الشحن</h2>
+            
+            <form id="checkout-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">الاسم الكامل</label>
+                    <input type="text" id="name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">رقم الهاتف</label>
+                    <input type="tel" id="phone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition" pattern="[569]\d{7}" title="الرجاء إدخال رقم هاتف كويتي صحيح مكون من 8 أرقام ويبدأ بـ 5, 6, أو 9." maxlength="8" placeholder="مثال: 51234567">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">الدولة</label>
+                    <input type="text" value="الكويت" disabled class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-500 cursor-not-allowed">
+                </div>
+
+                <div>
+                    <label for="governorate" class="block text-gray-700 dark:text-gray-300 mb-2">المحافظة</label>
+                    <select id="governorate" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition bg-white">
+                        <option value="" disabled selected>اختر المحافظة</option>
+                        <option value="العاصمة">العاصمة</option>
+                        <option value="حولي">حولي</option>
+                        <option value="الفروانية">الفروانية</option>
+                        <option value="الجهراء">الجهراء</option>
+                        <option value="الأحمدي">الأحمدي</option>
+                        <option value="مبارك الكبير">مبارك الكبير</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="area" class="block text-gray-700 dark:text-gray-300 mb-2">المنطقة</label>
+                    <input type="text" id="area" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label for="block" class="block text-gray-700 dark:text-gray-300 mb-2">القطعة</label>
+                        <input type="text" id="block" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label for="street" class="block text-gray-700 dark:text-gray-300 mb-2">الشارع</label>
+                        <input type="text" id="street" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label for="house" class="block text-gray-700 dark:text-gray-300 mb-2">المنزل</label>
+                        <input type="text" id="house" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition">
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl mt-6">
+                    <h3 class="font-bold mb-2 dark:text-white">ملخص الفاتورة</h3>
+                    <div class="flex justify-between text-lg font-bold text-brand-600 dark:text-brand-400">
+                        <span>الإجمالي النهائي:</span>
+                        <span id="final-total">0.000 KWD</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 dark:bg-brand-700 dark:hover:bg-brand-600 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2 mt-6 border-b-4 border-brand-800 dark:border-brand-900 active:border-0 active:translate-y-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-8.683-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.151-.174.2-.298.3-.495.099-.198.05-.372-.025-.52-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    إرسال الطلب عبر واتساب
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        const cart = CartManager.getCart();
+        if (cart.length === 0) window.location.href = 'index.html';
+
+        const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+        document.getElementById('final-total').innerText = total.toFixed(3) + ' KWD';
+
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            
+            // تجميع بيانات العنوان الجديدة
+            const governorate = document.getElementById('governorate').value;
+            const area = document.getElementById('area').value;
+            const block = document.getElementById('block').value;
+            const street = document.getElementById('street').value;
+            const house = document.getElementById('house').value;
+            const fullAddress = `دولة الكويت - محافظة ${governorate} - منطقة ${area} - قطعة ${block} - شارع ${street} - منزل ${house}`;
+
+            let msg = `*طلب جديد من متجر الكويت*\n\n`;
+            msg += `*الاسم:* ${name}\n`;
+            msg += `*الهاتف:* ${phone}\n`;
+            msg += `*العنوان:* ${fullAddress}\n\n`;
+            msg += `*الطلبات:*\n`;
+            
+            cart.forEach(item => {
+                msg += `- ${item.name} (العدد: ${item.quantity}) - السعر: ${item.price}\n`;
+            });
+
+            msg += `\n*الإجمالي: ${total.toFixed(3)} KWD*`;
+
+            // تفريغ السلة
+            CartManager.clearCart();
+
+            // توجيه لصفحة الشكر ثم واتساب
+            // سنقوم بفتح واتساب في نافذة جديدة وتوجيه الصفحة الحالية لصفحة الشكر
+            const whatsappUrl = `https://wa.me/201110760081?text=${encodeURIComponent(msg)}`;
+            
+            window.open(whatsappUrl, '_blank');
+            window.location.href = 'thankyou.html';
+        });
+    </script>
+</body>
+</html>
